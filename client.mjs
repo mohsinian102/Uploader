@@ -2,7 +2,7 @@ import net from 'net';
 import fs from 'node:fs/promises';
 
 const socket = net.createConnection({host: "127.0.0.1", port: 4080},async ()=>{
-    const filePath = "./text.txt";
+    const filePath = "./upload.txt";
     const fileHandle = await fs.open(filePath,"r");
     const fileStream = fileHandle.createReadStream();
 

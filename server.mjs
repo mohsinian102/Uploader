@@ -8,7 +8,7 @@ const server = net.createServer(()=>{
 server.on('connection', (socket)=>{
     console.log("new connection");
     socket.on('data', async (data) => {
-        const fileHandle = await fs.open('./storage/test.txt',"w");
+        const fileHandle = await fs.open('./storage/uploaded.txt',"w");
         const fileStream = fileHandle.createWriteStream();
         fileStream.write(data);
     })
