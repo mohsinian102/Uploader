@@ -21,7 +21,9 @@ server.on('connection', (socket)=>{
             })
         }
         else {
-            fileStream.write(data);
+            if(!fileStream.write(data)) {
+                socket.pause();
+            }
         }
     });
     socket.on("end", ()=>{
