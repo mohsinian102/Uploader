@@ -7,11 +7,16 @@ const socket = net.createConnection({host: "127.0.0.1", port: 4080},async ()=>{
     const fileStream = fileHandle.createReadStream();
 
     fileStream.on("data", (data)=> {
-        socket.write(data);
+        if (!socket.write(data)) {
+            fileStream.pause();
+        }
     });
 
+    socket.on('drain',()=> {
+        fileStream.resume();
+    })
+
     fileStream.on("end",()=>{
-        console.log("Connection Ended");
         socket.end();
     })
 });
