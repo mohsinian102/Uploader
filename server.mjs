@@ -1,5 +1,6 @@
 import net from 'net';
 import fs from 'node:fs/promises';
+import path from 'path';
 
 const server = net.createServer(()=>{
 
@@ -12,7 +13,9 @@ server.on('connection', (socket)=>{
     socket.on('data', async (data) => {
         if(!fileHandle) {
             socket.pause();
-            fileHandle = await fs.open('./storage/uploaded.txt',"w");
+            const fileNameEnd = data.indexOf('---');
+            const fileName = data.subarray(11,fileNameEnd).toString('utf-8');
+            fileHandle = await fs.open(`./storage/${fileName}`,"w");
             fileStream = fileHandle.createWriteStream();
             fileStream.write(data);
             socket.resume();
@@ -29,7 +32,9 @@ server.on('connection', (socket)=>{
     socket.on("end", ()=>{
         console.log("File uploaded successfully!");
         console.log("Closing the Connection");
-        fileHandle.close();
+        if(fileHandle) {
+            fileHandle.close();
+        }
         fileHandle = undefined;
         fileStream = undefined;
     })
