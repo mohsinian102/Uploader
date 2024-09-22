@@ -1,6 +1,5 @@
 import net from 'net';
 import fs from 'node:fs/promises';
-import path from 'path';
 
 const server = net.createServer(()=>{
 
