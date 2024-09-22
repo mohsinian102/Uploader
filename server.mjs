@@ -15,6 +15,7 @@ server.on('connection', (socket)=>{
             socket.pause();
             const fileNameEnd = data.indexOf('---');
             const fileName = data.subarray(11,fileNameEnd).toString('utf-8');
+            data = data.subarray(fileNameEnd+3);
             fileHandle = await fs.open(`./storage/${fileName}`,"w");
             fileStream = fileHandle.createWriteStream();
             fileStream.write(data);
